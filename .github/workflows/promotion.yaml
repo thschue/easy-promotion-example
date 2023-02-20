@@ -30,7 +30,6 @@ on:
         type: string  
         default: 'Application promotion'
 
-
 jobs:
   promote:
     # The type of runner that the job will run on
