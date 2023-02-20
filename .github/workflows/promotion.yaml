@@ -49,4 +49,4 @@ jobs:
           targetBranch: "main"
           masterBranchName: "main"
           title: "Promote ${{ inputs.target_env }} to ${{ inputs.target_version }}"
-	  message: "Update Version to ${{ inputs.target_version }}" 
+          message: "Update Version to ${{ inputs.target_version }}"
