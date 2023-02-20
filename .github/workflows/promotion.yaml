@@ -48,5 +48,6 @@ jobs:
           branch: "promotion/${{ inputs.target_env }}"
           targetBranch: "main"
           masterBranchName: "main"
+          createPR: 'true'
           title: "Promote ${{ inputs.target_env }} to ${{ inputs.target_version }}"
           message: "Update Version to ${{ inputs.target_version }}"
