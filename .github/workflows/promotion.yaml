@@ -1,7 +1,7 @@
 # Promote a GitOps application from one environment to the next
 # Taken from Codefresh: https://raw.githubusercontent.com/codefresh-contrib/gitops-cert-level-2-examples/main/.github/workflows/promote.yml
 
-name: Promote application
+name: promote
 
 # Controls when the workflow will run
 on:
