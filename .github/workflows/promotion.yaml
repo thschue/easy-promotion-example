@@ -46,7 +46,10 @@ jobs:
           valueFile: "envs/${{ inputs.target_env }}/test.yaml"
           propertyPath: 'version'
           value: inputs.target_version
-      
+          branch: "promotion-${{ inputs.target_env }}"
+          masterBranch: "main"
+          title: "Promote ${{ inputs.target_env }} to ${{ inputs.target_version }}"
+ 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: ${{ inputs.messsage }}    
