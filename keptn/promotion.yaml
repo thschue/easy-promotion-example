@@ -1,0 +1,54 @@
+apiVersion: lifecycle.keptn.sh/v1alpha2
+kind: KeptnTaskDefinition
+metadata:
+  name: promote-staging
+spec:
+  function:
+    inline:
+      code: |
+        let sdata_raw = Deno.env.get("SECURE_DATA");
+        let params_raw = Deno.env.get("DATA");
+        let context = Deno.env.get("CONTEXT");
+        let params;
+        let sdata;
+        let contextdata;
+        let body;
+        
+        if (sdata_raw != undefined) {
+            sdata = JSON.parse(sdata_raw);
+        }
+        
+        if (params_raw != undefined) {
+            params = JSON.parse(params_raw);
+        }
+        
+        if (context != undefined) {
+            contextdata = JSON.parse(context);
+        }
+        
+        
+        let url = "https://api.github.com/repos/" + params.username + "/" + params.repository + "/actions/workflows/" + params.job + "/dispatches"
+        
+        body = `{ "ref":"main", "inputs": { "target_version": "${contextdata.workloadVersion}", "target_env": "${params.nextStage}" }}`
+        
+        console.log(body)
+        
+        let resp = await fetch(url, {
+            headers: {
+                Accept: "application/vnd.github.everest-preview+json",
+                Authorization: "token " + sdata.github_token,
+            },
+            body,
+            method: "POST"
+        })
+        
+        console.log(resp)
+
+    parameters:
+      map:
+        nextStage: staging
+        username: thschue
+        repository: easy-promotion-example
+        job: promotion.yaml
+    secureParameters:
+      secret: github-promotion

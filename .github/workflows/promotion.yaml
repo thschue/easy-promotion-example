@@ -45,7 +45,7 @@ jobs:
           valueFile: "envs/${{ inputs.target_env }}/test.yaml"
           propertyPath: 'version'
           value: "${{ inputs.target_version }}"
-          branch: "promotion/${{ inputs.target_env }}"
+          branch: "promotion/${{ inputs.target_env }}-${{ inputs.target_version }}"
           targetBranch: "main"
           masterBranchName: "main"
           createPR: 'true'
