@@ -8,19 +8,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      source_env:
-        description: 'Source environment'
+      target_version:
+        description: 'Target Version'
         required: true
-        default: 'qa' 
-        type: choice
-        options:
-        - qa
-        - staging
-        - prod 
       target_env:
         description: 'Target environment'
         required: true
-        default: 'staging' 
         type: choice
         options:
         - qa
@@ -31,10 +24,6 @@ on:
         required: true 
         type: boolean 
         default: 'true'
-      promote_configmaps:
-        description: 'Also promote application settings'
-        required: true 
-        type: boolean 
       messsage:
         description: 'Commit message'
         required: true 
@@ -51,18 +40,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Copy container tag
-        if:  ${{ inputs.promote_container }}
-        uses: canastro/copy-file-action@master
+      - name: Update values.yaml
+        uses: fjogeleit/yaml-update-action@main
         with:
-          source: "envs/${{ inputs.source_env }}/test.yaml"
-          target: "envs/${{ inputs.target_env }}/test.yaml"
-      - name: Copy settings 
-        if:  ${{ inputs.promote_configmaps }}
-        uses: canastro/copy-file-action@master
-        with:
-          source: "envs/${{ inputs.source_env }}/settings.yml"
-          target: "envs/${{ inputs.target_env }}/settings.yml"         
+          valueFile: "envs/{{ inputs.target_env }}/test.yaml"
+          propertyPath: 'version'
+          value: "{{ inputs.target_version }}"
+      
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: ${{ inputs.messsage }}    
